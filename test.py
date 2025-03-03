@@ -5,7 +5,7 @@ from instance import post, retrieve, delete
 # Test Written by Ashish
 
 class TestAPI(unittest.TestCase):
-    @patch('instance.Mastodon')#replace 
+    @patch('instance.Mastodon')
     def test_post(self,MockMastodon):
         mock_instance=MockMastodon.return_value
         mock_instance.status_post.return_value={"id":114068569195091818,"content":"hello world"}
@@ -29,5 +29,5 @@ class TestAPI(unittest.TestCase):
         result=delete(123,mock_instance)
         self.assertEqual(result,"hello")
 
-    if __name__ == "__main__":
+if __name__ == "__main__":
         unittest.main()
