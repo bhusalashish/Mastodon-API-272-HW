@@ -4,38 +4,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Mastodon API Web UI</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #1e293b;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+        .status-box {
+            background-color: #e0f2fe;
+            border-left: 4px solid #0284c7;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .btn {
+            transition: background-color 0.2s;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .form-box {
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .input-field {
+            padding: 6px;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+        .copy-btn {
+            cursor: pointer;
+        }
+    </style>
 </head>
-<body>
-    <header>Mastodon API Web UI</header>
-    <h1>status id: {{id}}</h1></br>
-    <h2>status content: {{content}}</h2></br>
-    <h3>{{message}}</h3></br>
+<body class="flex items-center justify-center min-h-screen">
 
-    <form method="POST" action="/post">
-        <textarea name="content" placeholder="Enter your post"></textarea>
-        <button type="submit">Submit</button>
-    </form></br>
+    <div class="container">
+        <h1 class="text-lg font-semibold text-gray-800 text-center mb-4">Mastodon API Web UI</h1>
 
-    <form method="POST" action="/retrieve">
-        <input name="id" placeholder="Enter the status id you want to read"></input>
-        <button type="submit">Get Status</button>
-    </form></br>
+        <div class="status-box mb-4">
+            <p><strong>Status ID:</strong> {{ id }}</p>
+            <p class="text-lg font-semibold text-blue-900">Status Content: {{ content }}</p>
+            <p class="text-green-600 font-semibold">{{ message }}</p>
+        </div>
 
-    <form method="POST" action="/delete">
-        <input name="id" placeholder="Enter the status id you want to delete"></input>
-        <button type="submit">Delete</button>
-    </form></br>
+        <!-- Post Status Form -->
+        <form method="POST" action="/post" class="mb-3 bg-blue-50 form-box border border-blue-400 shadow-sm">
+            <h2 class="text-blue-700 font-semibold text-sm mb-1">Post a Status</h2>
+            <textarea class="w-full input-field border border-gray-300 text-gray-800 mb-2" name="content" placeholder="Enter your post"></textarea>
+            <button type="submit" class="btn w-full bg-blue-500 text-white py-1 rounded-md text-sm">Post</button>
+        </form>
 
-    <h2>
-        <b>List of Id:</b>
-        <ul>
-            {%for id in list%}
-                <li>{{id}}</li>
-                
-            {% endfor %}
-        </ul>
-    </h2>
+        <!-- Retrieve Status Form -->
+        <form method="POST" action="/retrieve" class="mb-3 bg-teal-50 form-box border border-teal-400 shadow-sm">
+            <h2 class="text-teal-700 font-semibold text-sm mb-1">Get Status</h2>
+            <input class="w-full input-field border border-gray-300 text-gray-800 mb-2" name="id" placeholder="Enter status ID">
+            <button type="submit" class="btn w-full bg-teal-500 text-white py-1 rounded-md text-sm">Retrieve</button>
+        </form>
+
+        <!-- Delete Status Form -->
+        <form method="POST" action="/delete" class="mb-3 bg-red-50 form-box border border-red-400 shadow-sm">
+            <h2 class="text-red-700 font-semibold text-sm mb-1">Delete Status</h2>
+            <input class="w-full input-field border border-gray-300 text-gray-800 mb-2" name="id" placeholder="Enter status ID">
+            <button type="submit" class="btn w-full bg-red-500 text-white py-1 rounded-md text-sm">Delete</button>
+        </form>
+
+        <!-- Status List with Copy Button -->
+        <div class="mt-4">
+            <h3 class="text-sm font-semibold mb-2">List of Status IDs:</h3>
+            <ul class="space-y-2">
+                {% for id in list %}
+                    <li class="flex items-center justify-between bg-gray-100 p-2 rounded-md border border-gray-300 text-xs">
+                        <span class="text-gray-800">{{ id }}</span>
+                        <button class="copy-btn bg-gray-200 text-gray-800 px-2 py-1 rounded-md text-xs hover:bg-gray-300" onclick="copyToClipboard('{{ id }}')">
+                            📋
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+        }
+    </script>
 
 </body>
 </html>
