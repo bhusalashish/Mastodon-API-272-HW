@@ -1,6 +1,14 @@
 from mastodon import Mastodon
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+MASTODON_ACCESS_TOKEN = os.getenv( "MASTODON_ACCESS_TOKEN" )
+MASTODON_API_BASE_URL = os.getenv( "MASTODON_API_BASE_URL" )
+
 #create a mastodon instance
-mastodon=Mastodon(access_token="pyNjksdzBcvVpOnCKcbSDQ8qgaimX21sxzXv9P7LwjM",api_base_url="https://mastodon.social")
+mastodon=Mastodon(access_token=MASTODON_ACCESS_TOKEN, api_base_url=MASTODON_API_BASE_URL )
 
 #retrieve all of the user posts id from mastodon API (Writen by Gabriel)
 def user_posts(instance):
